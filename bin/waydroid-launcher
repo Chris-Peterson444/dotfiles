@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# A small script to start a waydroid session on a seaprate wayland instance
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# keep this separate from gnome's (wayland-0)
+WAYLAND_DISPLAY=wayland-1
+
+# start the weston compositor instance
+weston --height=1080 --width=1920 -S $WAYLAND_DISPLAY &
+
+# Regardless of weston's set resolution, when waydroid starts it will fill the
+# output container (a specific resolution could be pinned, but resizing will
+# change the origin of the output and there's no way to fix it)
+# So, adjust the weston view size before starting waydroid
+
+sleep 1 # just to get past some of weston's output
+printf ${RED}'Press enter when ready...\n'${NC}
+read USELESS # only waiting for input
+
+WAYLAND_DISPLAY=$WAYLAND_DISPLAY waydroid --verbose show-full-ui
+
