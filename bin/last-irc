@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Look for last mention of string in irc logs"""
+import sys
+from argparse import ArgumentParser
+from argparse import Namespace
+from datetime import datetime
+from typing import Optional
+
+import requests
+
+IRC_LOG = 'https://irclogs.ubuntu.com'
+IRC_CHANNELS = [
+    "#ubunu-devel",
+    "#ubuntu-meeting",
+    "#ubuntu-release",
+    "#ubuntu-server",
+    "#ubuntu-bugs",
+    "#ubuntu-bugs-announce",
+]
+
+
+class Date:
+
+    def __init__(self, date: datetime):
+        self.date = datetime.astimezone(date)
+
+    @classmethod
+    def now(cls):
+        return cls(datetime.now())
+
+    def __str__(self):
+        year = self.date.year
+        month = f"{self.date.month}"
+        day = f"{self.date.day}"
+
+        return f"{year}/{month.zfill(2)}/{day.zfill(2)}"
+
+    @property
+    def tz(self):
+        offset = self.date.utcoffset()
+
+        hours_delta = offset.days * 24
+        seconds_delta_in_hours = offset.seconds // 3600
+        total_hour_delta = hours_delta + seconds_delta_in_hours
+
+        return f"(UTC {total_hour_delta})"
+
+
+class BadUrlError(Exception):
+    def __init__(
+        self,
+        url: str = None,
+        channel: Optional[str] = None,
+        date: Optional[Date] = None,
+    ):
+        message = (f"404 Error: {url!r} not found. Check that your "
+                   "channel exists in the logs\n"
+                   )
+
+        if channel:
+            message += f"Channel: {channel.replace('%23','#')!r}\n"
+
+        if date:
+            message += f"Date: {date} {date.tz}\n"
+        super().__init__(message)
+
+
+def get_log(channel: str, date: Date) -> str:
+
+    channel = channel.replace("#", "%23")
+    url: str = f"{IRC_LOG}/{date}/{channel}.txt"
+
+    response: requests.models.Response = requests.get(url)
+
+    if response.status_code == 404:
+        raise BadUrlError(url=url, channel=channel, date=date)
+
+    return response.text
+
+
+def parse_args() -> Namespace:
+    parser: ArgumentParser = ArgumentParser(
+        prog='last-irc',
+        description=("Get's the last mention of a string from "
+                     "Ubuntu IRC logs"
+                     ),
+
+    )
+
+    parser.add_argument(
+        'query',
+        type=str,
+        nargs="*",
+        help="keyword(s) to search for",
+        default="cpete",
+    )
+    parser.add_argument(
+        '-c',
+        '--channel',
+        action='append',
+        type=str,
+        help=("Channels to search. "
+               "Repeat to add more channels. "
+               "Default is all"
+              ),
+    )
+    parser.add_argument(
+        '-u',
+        '--utc',
+        action='store_true',
+        type=str,
+        help="Treat inputs as UTC times",
+    )
+
+    args: Namespace = parser.parse_args()
+
+    return args
+
+
+def parse_logs(queries: list[str], logs) -> list:
+    ...
+
+
+def main(args: Namespace) -> int:
+    today: Date = Date.now()
+    log = get_log(channel=IRC_CHANNELS[0], date=today)
+
+    return 0
+
+
+if __name__ == "__main__":
+    args: Namespace = parse_args()
+    print(args)
+    sys.exit(main(args))
