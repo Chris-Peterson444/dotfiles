@@ -1,0 +1,23 @@
+# fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /usr/share/doc/fzf/examples/key-bindings.bash
+
+pupdate() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
+
+# personal bin files
+# PATH=${HOME}/software/dotfiles/bin/:$PATH
+pupdate ${HOME}/software/dotfiles/bin/
+
+# bind C-f to tmux-sessionizer
+bind -x '"\C-f": "tmux-sessionizer"'
+
+# vm testing alias
+alias ssh-kvm='ssh ubuntu-server@localhost -p 2222 -i ~/.ssh/github -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"'
+
+# vm testing alias
+alias ssh-kvm-boot='ssh ubuntu-server@localhost -p 2223 -i ~/.ssh/github -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"'
+
+alias kvm-pxe='sudo kvm -no-reboot  -device qxl -m 8G -nic user,id=net0,model=virtio-net-pci,tftp=/srv/tftp/,bootfile=/pxelinux.0 -drive file=/tmp/kvm-test/edge-test.img,format=qcow2,cache=writethrough,if=virtio
+'
+
+
