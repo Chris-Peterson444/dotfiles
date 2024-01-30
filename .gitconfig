@@ -1,0 +1,29 @@
+[gitubuntu]
+	lpuser = cpete
+
+[user]
+	name = Chris Peterson
+	email = chris.peterson@canonical.com
+
+[log]
+    decorate = short
+[commit]
+    verbose = true
+[merge]
+    summary = true
+    stat = true
+[core]
+    whitespace = trailing-space,space-before-tab
+	editor = nvim
+
+[diff "ruby"]
+    funcname = "^ *\\(\\(def\\) .*\\)"
+[diff "image"]
+    textconv = identify
+
+[url "git+ssh://cpete@git.launchpad.net/"]
+    insteadof = lp:
+[color "diff"]
+	whitespace = red reverse
+[diff]
+	wsErrorHighlight = all
