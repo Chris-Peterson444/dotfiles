@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-selected=`cat ~/.tmux-cht-languages ~/.tmux-cht-command | fzf`
+prefix="$HOME/software/dotfiles/tmux/"
+# command_list=$(which .tmux-cht-command)
+command_list="$prefix/.tmux-cht-command"
+lang_list="$prefix/.tmux-cht-languages"
+# lang_list=$(which tmux-cht-languages)
+# selected=`cat ~/.tmux-cht-languages ~/.tmux-cht-command | fzf`
+selected=`cat $lang_list $command_list | fzf`
 if [[ -z $selected ]]; then
     exit 0
 fi
