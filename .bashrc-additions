@@ -20,6 +20,7 @@ alias ssh-kvm-boot='ssh ubuntu-server@localhost -p 2223 -i ~/.ssh/github -o "Use
 alias kvm-pxe='sudo kvm -no-reboot  -device qxl -m 8G -nic user,id=net0,model=virtio-net-pci,tftp=/srv/tftp/,bootfile=/pxelinux.0 -drive file=/tmp/kvm-test/edge-test.img,format=qcow2,cache=writethrough,if=virtio'
 
 # Go things
-export PATH=$PATH:/usr/local/go/bin
+pupdate /usr/local/go/bin
+pupdate ${HOME}/go/bin
 
 
