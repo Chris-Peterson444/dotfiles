@@ -27,3 +27,4 @@
 	whitespace = red reverse
 [diff]
 	wsErrorHighlight = all
+	tool = ydiff

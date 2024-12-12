@@ -1,0 +1,6 @@
+export DEBFULLNAME="Chris Peterson"
+export DEBEMAIL=chris.peterson@canonical.com
+
+export DEB_SIGN_PROGRAM="/usr/bin/gpg"
+export DEB_SIGN_KEYID="0x83C71F6735EF40A5434365A2428FCAD73C6737F8"
+export EDITOR="nvim"

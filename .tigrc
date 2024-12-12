@@ -1,0 +1,19 @@
+# Cursor color
+ # color cursor cyan black bold
+color cursor blue white bold
+
+# Compare commit in main/diff view with parent
+# Prefer this approach over raw ydiff since it prints to backing terminal in
+# tmux when invoked this way and makes the output weird.
+bind main w !sh -c "ydiff -w80 -p cat --color=always %(commit)^ %(commit) | less -r"
+bind diff w !sh -c "ydiff -w80 -p cat --color=always %(commit)^ %(commit) | less -r"
+# bind main w !ydiff -w0 %(commit)^ %(commit)
+
+# Some alternatives using difftool but I like ydiff more than difftool compatible
+# options.
+# https://github.com/jonas/tig/issues/219#issuecommeknt-406817763
+# bind main w !git difftool -d %(commit)^!
+# bind diff w !git difftool -d %(commit)^!
+#
+# Always open a horizontal view
+set vertical-split = false
